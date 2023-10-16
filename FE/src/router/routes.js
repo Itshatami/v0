@@ -13,6 +13,27 @@ const routes = [
     ],
   },
   {
+    path: "/posts",
+    component: () => import("layouts/MainLayout.vue"),
+    meta: {
+      requireAuth: true,
+    },
+    children: [
+      {
+        path: "",
+        component: () => import("pages/AllPost.vue"),
+      },
+      {
+        path: "create",
+        component: () => import("pages/CreatePost.vue"),
+      },
+      {
+        path: "edit/:id",
+        component: () => import("pages/EditPost.vue"),
+      },
+    ],
+  },
+  {
     path: "/register",
     component: () => import("layouts/StarterLayout.vue"),
     children: [
