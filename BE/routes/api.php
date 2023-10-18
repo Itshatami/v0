@@ -30,3 +30,4 @@ Route::post('/register', [RegisterController::class]);
 Route::post('/login', [SessionsController::class, 'auth']);
 
 Route::middleware('auth:api')->apiResource('posts', PostController::class);
+Route::middleware('auth:api')->get('public/posts', [PostController::class , 'public']);

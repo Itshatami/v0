@@ -12,6 +12,15 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    public function public(Request $request)
+    {
+        $posts = Post::where('user_id', '!=', $request->user()->id)->get();
+
+    return $posts;
+    }
+
     public function index(Request $request)
     {
         return $request->user()->posts;

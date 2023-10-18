@@ -24,7 +24,12 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="discover">
             <div class="text-h6">Discover</div>
-            <div>you </div>
+            <div v-if="AllPosts.length < 1">
+              <h1 class="text-h6">no one share a post</h1>
+            </div>
+            <div v-else>
+              
+            </div>
           </q-tab-panel>
           <q-tab-panel name="posts" class="text-center">
             <div class="text-h5">Posts</div>
@@ -93,6 +98,7 @@
 </template>
 
 <script>
+import { useQuasar } from 'quasar';
 import { api } from 'src/boot/axios';
 import { onMounted, ref } from 'vue';
 
@@ -100,17 +106,31 @@ export default {
   // name: 'PageName',
 
   setup() {
+    const q = useQuasar();
     const tab = ref('posts');
     const posts = ref([])
+    const AllPosts = ref([]);
     const selectedPost = ref(null)
     const selectedIndex = ref(null)
     const taeed = ref(false)
-
 
     function fetchPost() {
       api.get('api/posts').then(res => {
         console.log(res.data);
         posts.value = res.data
+      })
+    }
+
+    function fetchAllPost() {
+      api.get('api/public/posts').then(res => {
+        console.log(res.data);
+        AllPosts.value = res.data;
+      }).catch(err => {
+        q.notify({
+          message: err.message,
+          color: 'red',
+          position: 'top'
+        })
       })
     }
 
@@ -132,9 +152,10 @@ export default {
 
     onMounted(() => {
       fetchPost();
+      fetchAllPost();
     })
 
-    return { tab, posts, fetchPost, deletePost, selectedIndex, selectedPost, showConfirmation, taeed }
+    return { tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
   }
 }
 </script>
