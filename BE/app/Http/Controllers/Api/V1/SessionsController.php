@@ -12,7 +12,7 @@ class SessionsController extends Controller
 {
     public function auth(Request $request)
     {
-
+        
         $validator = Validator::make($request->all(), [
             'username' => 'email|required|min:7|max:200',
             'password' => 'required|min:7'

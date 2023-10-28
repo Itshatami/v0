@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Validator;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+   return $request->user();
+});
 
 Route::post('/register', RegisterController::class);
 
 Route::post('/login', [SessionsController::class, 'auth']);
 
 Route::middleware('auth:api')->apiResource('posts', PostController::class);
-Route::middleware('auth:api')->get('public/posts', [PostController::class , 'public']);
+Route::middleware('auth:api')->get('public/posts', [PostController::class, 'public']);

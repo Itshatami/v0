@@ -3,9 +3,11 @@
     <!-- content -->
     <div class="q-my-lg text-center">
       <q-avatar size="100px">
-        <img src="selff.jpg" alt="avatar">
+        <img v-if="userData" src="selff.jpg" alt="avatar">
+        <q-skeleton v-else type="circle" />
       </q-avatar>
-      <h1 class="text-h5 text-weight-medium">Alireza</h1>
+      <h1 v-if="userData" class="text-h5 text-weight-medium">{{ userData.username }}</h1>
+      <q-skeleton v-else type="text" />
     </div>
 
     <!-- tab panels-->
@@ -22,15 +24,28 @@
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
+          <!-- Discover -->
           <q-tab-panel name="discover">
             <div class="text-h6">Discover</div>
             <div v-if="AllPosts.length < 1">
               <h1 class="text-h6">no one share a post</h1>
             </div>
-            <div v-else>
-              
+            <div v-else class="row q-col-gutter-sm q-mt-md">
+              <div v-for="(post, index) in AllPosts" :key="'post ' + index + 1" class="col-6">
+                <q-card class="text-center">
+                  <q-card-section>
+                    <div class="text-h6">{{ post.title }}</div>
+                    <div class="text-subtitled2">{{ post.caption }}</div>
+                  </q-card-section>
+                  <q-card-actions align="around">
+                    <q-btn flat icon="favorite" />
+                    <q-btn flat icon="favorite" />
+                  </q-card-actions>
+                </q-card>
+              </div>
             </div>
           </q-tab-panel>
+          <!-- Posts -->
           <q-tab-panel name="posts" class="text-center">
             <div class="text-h5">Posts</div>
             <div v-if="posts.length < 1">
@@ -113,6 +128,7 @@ export default {
     const selectedPost = ref(null)
     const selectedIndex = ref(null)
     const taeed = ref(false)
+    const userData = ref(null)
 
     function fetchPost() {
       api.get('api/posts').then(res => {
@@ -134,6 +150,21 @@ export default {
       })
     }
 
+    function fechUserData() {
+      api.get('api/user')
+        .then(res => {
+          console.log(res.data);
+          userData.value = res.data
+        })
+        .catch(e => {
+          q.notify({
+            message: e.message,
+            color: 'red',
+            position: top
+          })
+        })
+    }
+
     function showConfirmation(id, index) {
       selectedPost.value = posts.value[index];
       selectedIndex.value = index;
@@ -153,9 +184,10 @@ export default {
     onMounted(() => {
       fetchPost();
       fetchAllPost();
+      fechUserData()
     })
 
-    return { tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
+    return { userData, tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
   }
 }
 </script>
