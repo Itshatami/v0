@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Validator;
 //     return $request->user();
 // });
 
-Route::post('/register', [RegisterController::class]);
+Route::post('/register', RegisterController::class);
 
 Route::post('/login', [SessionsController::class, 'auth']);
 
