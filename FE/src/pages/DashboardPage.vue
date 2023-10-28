@@ -38,8 +38,8 @@
                     <div class="text-subtitled2">{{ post.caption }}</div>
                   </q-card-section>
                   <q-card-actions align="around">
-                    <q-btn flat icon="favorite" />
-                    <q-btn flat icon="favorite" />
+                    <q-btn flat icon="visibility" />
+                    <q-btn @click="likeToggle(post.id, index)" flat icon="favorite_outline" />
                   </q-card-actions>
                 </q-card>
               </div>
@@ -181,13 +181,20 @@ export default {
       })
     }
 
+    function likeToggle(postId, index) {
+      api.post('api/likes/' + postId)
+        .then(res => {
+          console.log(res.data.liked);
+        })
+    }
+
     onMounted(() => {
       fetchPost();
       fetchAllPost();
       fechUserData()
     })
 
-    return { userData, tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
+    return {likeToggle , userData, tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
   }
 }
 </script>
