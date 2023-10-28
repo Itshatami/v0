@@ -18,7 +18,20 @@ class PostController extends Controller
     {
         $posts = Post::where('user_id', '!=', $request->user()->id)->get();
 
-    return $posts;
+        foreach ($posts as $post) {
+            $likes = $post->likes;
+            $user = $request->user();
+            if ($likes->count() > 0) {
+                foreach ($likes as $like) {
+                    if ($like->user_id = $user->id) {
+                        $post->liked = true;
+                    } else {
+                        $post->liked = false;
+                    }
+                }
+            }
+        }
+        return $posts;
     }
 
     public function index(Request $request)

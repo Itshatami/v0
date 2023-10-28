@@ -39,7 +39,8 @@
                   </q-card-section>
                   <q-card-actions align="around">
                     <q-btn flat icon="visibility" />
-                    <q-btn @click="likeToggle(post.id, index)" flat icon="favorite_outline" />
+                    <q-btn @click="likeToggle(post.id, index)" flat :color="post.liked ? 'red' : 'gray-7'"
+                      :icon="post.liked ? 'favorite' : 'favorite_outline'" />
                   </q-card-actions>
                 </q-card>
               </div>
@@ -184,7 +185,8 @@ export default {
     function likeToggle(postId, index) {
       api.post('api/likes/' + postId)
         .then(res => {
-          console.log(res.data.liked);
+          // console.log(res.data.liked);
+          AllPosts.value[index].liked = res.data.liked
         })
     }
 
@@ -194,7 +196,7 @@ export default {
       fechUserData()
     })
 
-    return {likeToggle , userData, tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
+    return { likeToggle, userData, tab, posts, fetchPost, deletePost, AllPosts, selectedIndex, selectedPost, showConfirmation, taeed }
   }
 }
 </script>
