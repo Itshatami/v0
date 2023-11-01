@@ -46,7 +46,8 @@ class PostController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:200',
-            'caption' => 'required|max:3000'
+            'caption' => 'required|max:3000',
+            'picture' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->first(), 422);
@@ -56,6 +57,8 @@ class PostController extends Controller
             'title' => $request->title,
             'caption' => $request->caption
         ]);
+        $post->cover = $request->file('picture')->storeAs('postCovers',  $post->id.'.jpg');
+        $post->save();
         if (!$post) {
             return response()->json(['status' => false, 'message' => 'could not save user']);
         } else {

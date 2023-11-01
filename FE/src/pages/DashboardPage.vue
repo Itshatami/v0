@@ -56,6 +56,7 @@
             <div v-else class="row q-col-gutter-sm q-mt-md">
               <div v-for="(post, index) in posts" :key="'post' + index + 1" class="col-6">
                 <q-card>
+                  <q-img :src="'http://127.0.0.1:8000/storage/'+post.cover" />
                   <q-card-section>
                     <div class="text-h6">{{ post.title }}</div>
                     <div class="text-subtitle2">{{ post.caption }}</div>
