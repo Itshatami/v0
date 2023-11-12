@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\SendSMS;
 use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -29,12 +30,16 @@ class LikeController extends Controller
                     $like->delete();
                     return response()->json(['liked' => false]);
                 } else {
+                   
                     newLike($postId, $userId);
+                    
                     return response()->json(['liked' => true]);
                 }
             }
         } else {
+            $vc = rand(1111, 9999);
             newLike($postId, $userId);
+            SendSMS::sendVerification('09398482612', $vc);
             return response()->json(['liked' => true]);
         }
     }

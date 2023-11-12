@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\PostController;
 use App\Http\Controllers\Api\V1\RegisterController;
 use App\Http\Controllers\Api\V1\SessionsController;
 use App\Http\Controllers\LikeController;
+use App\Library\SendSMS;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // authentication
 Route::post('/register', RegisterController::class);
 Route::post('/login', [SessionsController::class, 'auth']);
+Route::post('/verify', [SessionsController::class, 'verify']);
 
 // posts
 Route::middleware('auth:api')->apiResource('posts', PostController::class);

@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function findForPassport($username)
+    {
+        return $this->where('number', $username)->first();
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +25,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'mobile',
+        'number',
         'email',
         'password',
     ];
@@ -55,7 +60,8 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-    public function likes(){
-        return $this->belongsToMany(Like::class, 'likes' , 'post_id' , 'user_id');
+    public function likes()
+    {
+        return $this->belongsToMany(Like::class, 'likes', 'post_id', 'user_id');
     }
 }
